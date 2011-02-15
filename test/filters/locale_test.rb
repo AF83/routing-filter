@@ -51,6 +51,10 @@ class LocaleTest < Test::Unit::TestCase
     assert_equal '/de/products/1', routes.generate(show_params.merge(:locale => 'de'))
   end
 
+  test 'prepends the segments /:locale while conserving extra params' do
+    assert_equal '/de?foo=bar', routes.generate(index_params.merge(:locale => 'de', :foo => 'bar'))
+  end
+
   test 'prepends the segments /:locale if the given locale is the default_locale and include_default_locale is true' do
     assert RoutingFilter::Locale.include_default_locale?
     assert_equal '/en/products/1', routes.generate(show_params.merge(:locale => 'en'))

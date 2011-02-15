@@ -26,7 +26,13 @@ module RoutingFilter
 
       def prepend_segment!(result, segment)
         url = result.is_a?(Array) ? result.first : result
-        url.sub!(%r(^(http.?://[^/]*)?(.*))) { "#{$1}/#{segment}#{$2 == '/' ? '' : $2}" }
+        url.sub!(%r(^(http.?://[^/]*)?(.*))) {
+          '%s/%s%s' % [
+            $1      ,
+            segment ,
+            ($2 == '/' ? '' : $2.sub(/^\/\?/, '?') )
+          ]
+        }
       end
 
       def append_segment!(result, segment)
